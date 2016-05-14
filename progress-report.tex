@@ -1,0 +1,111 @@
+\documentclass[journal]{IEEEtran}
+\usepackage{blindtext}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{lipsum}
+\usepackage{multicol}
+
+% *** GRAPHICS RELATED PACKAGES ***
+%
+\ifCLASSINFOpdf
+
+\else
+
+\fi
+
+\hyphenation{op-tical net-works semi-conduc-tor}
+\begin{document}
+%
+% paper title
+% can use linebreaks \\ within to get better formatting as desired
+\title{Structure from Dense Paired Stereo Reconstruction}
+\author{Davis~Wertheimer, Leah~Kim, James~Cranston \\[4px]
+\{jamesc4, daviswer, leahkim\}@stanford.edu}
+
+% The paper headers
+\markboth{CS231a Project Report , May 2016, Stanford University}%
+{Shell \MakeLowercase{\textit{et al.}}: Bare Demo of IEEEtran.cls for Journals}
+\maketitle
+
+% Abstract
+\begin{abstract}
+  Here's what this needs to include:
+  \begin{itemize}
+    \item Title and authors
+    \item Sec 1. intro: problem you want to solve and why
+    \item Sec 2. technical part: how do you propose to solve it?
+    \item Sec 3. milestones achieved so far
+    \item Sec 4. remaining milestones (dates and sub-goals)
+    \item References
+  \end{itemize}  
+\end{abstract}
+
+\IEEEpeerreviewmaketitle
+
+\section{Introduction} \label{introduction}
+We began our group project trying to use methods to create more accurate disparity maps, but changed our project focus to focus on an improved approaches to SFM stereo reconstruction. We are creating an algorithm to run SFM on stereo correspondences to build a reconstruction without prior information on point correspondences in the images. After meeting with Prof. Silvio Savarese on Thursday May 12, 2016 and getting advice, we agreed to proceed with the following three approaches. We will discuss these approaches in more detail in section \ref{technicalpart}.
+\begin{enumerate}
+  \item Given stereo pairs of cameras from fixed aperture cameras (rectified pairs) with known internal and external parameters, generate point clouds for each pair. These point clouds come from the correspondence algorithm with a sliding window. Then, use bundle adjustment on the point clouds to find 3D points and generate a reconstruction.
+  \item Find close pairs of images using minimum Euclidean distance. Then, rectify these pairs to make dense correspondences. With these correspondences, then run SFM on the dense correspondences to create a 3D reconstruction.
+  \item Take either option 1 or 2, then with these results, compare with the results of having known point correspondences from the start to see how well our algorithm performed absent of this information.
+\end{enumerate}
+For this milestone, we are deciding to only complete option 2, which we will describe in more detail in the section.
+
+\section{Technical Part} \label{technicalpart}
+
+Given a bunch of point clouds, it allows you to match them up. You may/may not need to know point correspondences 
+
+DAVIS: given two point clouds and a shared camera, just generate the the point correspondences. If we have this code and didn't want to do bundle adjustment, it wouldn't be hard to generate a best fit affine transformation to map the point clouds into each other.
+
+\section{Milestones Achieved So Far} \label{achieved}
+\begin{enumerate}
+  \item Construct pairs by forming a minimum spanning tree. (James)
+  \item Rectify the images for each pair. (Leah)
+  \item Build a dense correspondence for each pair, from lecture 6 page 23.
+  \begin{itemize}
+    \item Triangulate the points
+    \item Given $M$, $M'$, and two points in each image from the sliding window,
+    \item Need camera matrices for rectified images.
+    \item Output is a point in 3D
+  \end{itemize}
+  \item Run SFM: for every pair of pairs with a shared camera, define the point correspondences, do bundle adjustment using the point cloud, correspondences, and camera information.
+
+\end{enumerate}
+
+
+\section{Remaining Milestones} \label{remaining}
+
+% Can use something like this to put references on a page
+% by themselves when using endfloat and the captionsoff option.
+\ifCLASSOPTIONcaptionsoff
+  \newpage
+\fi
+\begin{thebibliography}{1}
+
+\bibitem{IEEEhowto:kopka}
+Aamir~Khan , Muhammad~Farhan, Asar~Ali, \emph{Speech Recognition: Increasing efficiency of SVMs}, 2011
+\bibitem{}
+Dong Yu, Li Deng, Frank Seide, \emph{The Deep Tensor Neural Network With Applications to Large Vocabulary Speech Recognition}, 2012
+\bibitem{}
+Li, S. Z. \emph{Content-based audio classification and retrieval using the nearest feature line method. IEEE Transactions on Speech and Audio Processing} 2000
+\bibitem{}
+Lu, L., Zhang, H.-J., \& Li, S. Z.\emph{Content-based audio classification and segmentation by using support vector machines. Multimedia Systems}, 2003
+\bibitem{}
+Huang, R., \& Hansen, J. H. L. \emph{Advances in unsupervised audio classification and segmentation for the broadcast news and NGSW corpora. IEEE Transactions on Audio, Speech and Language Processing} 2006
+\bibitem{}
+Abdulrahman Alalshekmubarak \emph{Towards a robust Arabic speech Recognition system based on reservoir computing}, 201
+\bibitem{}
+http://recognize-speech.com/feature-extraction/mfcc
+\end{thebibliography}
+
+%\section{Related Work}
+%http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=854916
+%Structure from Motion without Correspondence
+%
+%http://research.microsoft.com/en-us/um/people/zhang/Papers/TR99-21.pdf
+%How to do optimal rectification
+%
+%http://david.fofi.free.fr/IMG/pdf/Fusiello_2000.pdf
+%Compact algorithm for image rectification
+
+\end{document}
