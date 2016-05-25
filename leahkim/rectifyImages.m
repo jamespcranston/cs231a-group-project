@@ -12,7 +12,7 @@ function [T1, T2, Pn1, Pn2] = rectifyImages(Po1, Po2)
     R = [v1'/norm(v1)
          v2'/norm(v2)
          v3'/norm(v3)];
-    A = (A1 + A2)./2;
+    A = (K1 + K2)./2;
     A(1,2)=0
     
     Pn1 = A * [R -R*c1]; % This is the rectified projective camera 1
