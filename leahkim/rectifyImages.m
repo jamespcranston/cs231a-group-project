@@ -3,8 +3,8 @@ function [T1, T2, Pn1, Pn2] = rectifyImages(Po1, Po2)
     [K1, R1, t1] = extract_params(Po1);
     [K2, R2, t2] = extract_params(Po2);
     
-    c1 = -inv(Po1(:,1,:3))*Po1(:,4);
-    c2 = -inv(Po2(:,1,:3))*Po2(:,4);
+    c1 = -inv(Po1(:,1:3))*Po1(:,4);
+    c2 = -inv(Po2(:,1:3))*Po2(:,4);
     
     v1 = c1-c2;
     v2 = cross(R1(3,:)', v1);
