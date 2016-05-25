@@ -19,6 +19,7 @@ end
 G = graph(A);
 T = minspantree(G);
 asArray = table2array(T.Edges(:,1));
+asArray(2,2)
 
 % Write the node pairings from the MST to a file
 
@@ -28,13 +29,14 @@ if exist('node-pairs.txt', 'file') == 2
 end
 
 % File to write vanishing points to
-fileID = fopen('node-pairs.txt', 'w');
+fileID1 = fopen('node-pairs.txt', 'w');
 
 % Collect N vanishing points
-for i = 1:size(asArray,1)
-    fprintf(fileID, '%8.4f %8.4f\n', asArray(i,1), asArray(i,2));
+for i = 1:N
+    V = getVanishingPoint(img1);
+    fprintf(fileID1, '%8.4f %8.4f\n', V(1), V(2));
 end
 
-fclose(fileID);
+fclose(fileID1);
 
 
