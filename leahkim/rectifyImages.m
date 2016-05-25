@@ -15,9 +15,9 @@ function [T1, T2, Pn1, Pn2] = rectifyImages(Po1, Po2)
     A = (A1 + A2)./2;
     A(1,2)=0
     
-    Pn1 = A * [R -R*c1];
-    Pn2 = A * [R -R*c2];
+    Pn1 = A * [R -R*c1]; % This is the rectified projective camera 1
+    Pn2 = A * [R -R*c2]; % This is the rectified projective camera 2
     
-    T1 = Pn1(1:3, 1:3) * inv(Po1(1:3, 1:3));
-    T2 = Pn2(1:3, 1:3) * inv(Po2(1:3, 1:3));
+    T1 = Pn1(1:3, 1:3) * inv(Po1(1:3, 1:3)); % this is the transformation matrix for rectification 1
+    T2 = Pn2(1:3, 1:3) * inv(Po2(1:3, 1:3)); % this is the transformation matrix for rectification 2
 end
