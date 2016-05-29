@@ -1,0 +1,8 @@
+Get set of pictures and calibrated cameras (DONE)
+Create MST, save edge pairs to file (DONE)
+Read edge pairs, rectify, find pixel correspondences, save to file (NEED WRAPPER CODE FOR THIS)
+Using saved MST and pixel correspondences, generate point correspondences between every pair of edges with a shared node in the MST (UNDONE)
+	(A thought on this: instead of traversing the MST recursively, why don't we just do this manually? It's not like there are huge numbers of cameras or anything...)
+For every point correspondence set, find the best-fit similarity transformation (UNDONE)
+Apply the similarities in sequence to get a single dense point cloud (UNDONE)
+	(This could also be done manually rather than recursively)
