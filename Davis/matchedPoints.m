@@ -1,4 +1,4 @@
-# Given two stereo pairs with a shared camera, returns two 3*N lists of 
+# Given two stereo pairs with a shared camera, returns two N*3 lists of 
 # Euclidean world points that must correspond between the two point clouds.
 
 # Arguments: p11,p12,p21,p22 are n*2 lists of corresponding pixel coordinates 
@@ -14,12 +14,14 @@
 # m11,m12,m21,m22 are the camera matrices for the rectified cameras in the
 # stereo pairs. Naming convention is consistent with above. 
 
-# im1, im2, and im3 are the images from camera p11, p12/p21, and p22, 
-# respectively. They are used to find sizes and retrieve color information. 
+# im11,im12,im21,im22 are the rectified images from cameras p11,p12,p21,p22, 
+# respectively. 
 
-function [P1,P2] = matchedPoints(p11,p12,p21,p22,h12,h21,m11,m12,m21,m22,im11,im12,im21,im22)
-  h = size(im1,1);
-  w = size(im1,2);
+# im is the original, nonrectified image coming from the shared camera
+
+function [P1,P2] = matchedPoints(p11,p12,p21,p22,h12,h21,m11,m12,m21,m22,im11,im12,im21,im22,im)
+  h = size(im,1);
+  w = size(im,2);
   P1 = zeros(0,7);
   P2 = zeros(0,7);
   for y=1:h
