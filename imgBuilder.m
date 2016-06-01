@@ -15,15 +15,13 @@ addpath leahkim;
 
 load('construct-pairs/frames.mat');
 pairs = node_pairs;
-window_diam = 7;
-pixel_thresh = .5;
 
 rectifiedImgs = cell(0,2);
 offsets = cell(0,2);
 Ps = cell(0,2);
 Ts = cell(0,2);
 
-i=1
+i=2
 
 
 ind1 = pairs(i,1);

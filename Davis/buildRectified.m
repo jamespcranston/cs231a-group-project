@@ -22,15 +22,15 @@ function [y,result] = buildRectified(im, H, verbose)
   d = T*[h,w,1]';
   d = d(1:2)./d(3);
   # Find the bounding box for the outer rectangle
-  left = floor(min([a(2),b(2),c(2),d(2)]));
-  right = ceil(max([a(2),b(2),c(2),d(2)]));
-  top = floor(min([a(1),b(1),c(1),d(1)]));
-  bottom = ceil(max([a(1),b(1),c(1),d(1)]));
+  left = min([a(2),b(2),c(2),d(2)]);
+  right = max([a(2),b(2),c(2),d(2)]);
+  top = min([a(1),b(1),c(1),d(1)]);
+  bottom = max([a(1),b(1),c(1),d(1)]);
   s = 400/(bottom-top);
-  left *= s;
-  right *= s;
-  top *= s;
-  bottom *= s;
+  left = floor(left*s);
+  right = ceil(right*s);
+  top = floor(top*s);
+  bottom = ceil(bottom*s);
   # Visual checking
   if verbose
     figure
