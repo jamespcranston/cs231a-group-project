@@ -20,27 +20,29 @@ rectifiedImgs = cell(0,2);
 offsets = cell(0,2);
 Ps = cell(0,2);
 Ts = cell(0,2);
+Ss = zeros(0,1);
 
-i=4
-
-
-ind1 = pairs(i,1);
-ind2 = pairs(i,2);
-% Load both cameras and their matrices
-cam1 = frames(ind1).P;
-cam2 = frames(ind2).P;
-im1 = frames(ind1).image;
-im2 = frames(ind2).image;
-  
-% Rectify cameras
-[T1, T2, P1, P2] = rectifyImages(cam1, cam2);
-Ps = vertcat(Ps, {P1, P2});
-Ts = vertcat(Ts, {T1, T2});
-disp("Building rectified images");
-[o1,m1,s] = buildRectified(im1, T1, true, 0);
-[o2,m2] = buildRectified(im2, T2, true, s);
-rectifiedImgs = vertcat(rectifiedImgs, {m1, m2});
-offsets = vertcat(offsets, {o1, o2});
+for i=1:5
+  i
+  ind1 = pairs(i,1);
+  ind2 = pairs(i,2);
+  % Load both cameras and their matrices
+  cam1 = frames(ind1).P;
+  cam2 = frames(ind2).P;
+  im1 = frames(ind1).image;
+  im2 = frames(ind2).image;
+    
+  % Rectify cameras
+  [T1, T2, P1, P2] = rectifyImages(cam1, cam2);
+  Ps = vertcat(Ps, {P1, P2});
+  Ts = vertcat(Ts, {T1, T2});
+  disp("Building rectified images");
+  [m1,o1,s] = buildRectified(im1, T1, true, 0);
+  [m2,o2,~] = buildRectified(im2, T2, true, s);
+  Ss = [Ss; s];
+  rectifiedImgs = vertcat(rectifiedImgs, {m1, m2});
+  offsets = vertcat(offsets, {o1, o2});
+end
 
 % Clear unnecessary variables
 clear pairs
@@ -61,3 +63,4 @@ clear T1
 clear T2
 clear P1
 clear P2
+clear s
