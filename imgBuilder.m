@@ -1,6 +1,7 @@
 # Takes pairs from the MST and returns rectified images, and associated info.
 
 # TO USE THIS CODE:
+# load the 'node_pairs' file from James' folder
 # set i to the index of the desired camera pairs
 # run the code
 # clear all variables except Ps, Ts, offsets, and rectifiedImgs
@@ -22,7 +23,7 @@ offsets = cell(0,2);
 Ps = cell(0,2);
 Ts = cell(0,2);
 
-i=2
+i=1
 
 
 ind1 = pairs(i,1);
