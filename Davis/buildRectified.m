@@ -1,18 +1,18 @@
-# Given an image and its rectifying transformation, returns the square-pixel 
-# rendering of the smallest rectangle that bounds the rectified image, and
-# its vertical offset from the origin of the camera coordinate system. 
-# Portions outside the original image are colored black, and original image
-# intensities are raised by 1 so that 0 signals 'out of image'. The 'verbose'
-# argument is true if you want to see graphical representations of the output,
-# false otherwise. 
+% Given an image and its rectifying transformation, returns the square-pixel 
+% rendering of the smallest rectangle that bounds the rectified image, and
+% its vertical offset from the origin of the camera coordinate system. 
+% Portions outside the original image are colored black, and original image
+% intensities are raised by 1 so that 0 signals 'out of image'. The 'verbose'
+% argument is true if you want to see graphical representations of the output,
+% false otherwise. 
 
 function [y,result] = buildRectified(im, H, verbose)
   [h, w, ~] = size(im);
-  # Change the coordinate system to match the vertical indexing of pixels
+  % Change the coordinate system to match the vertical indexing of pixels
   T = [H(2,:);H(1,:);H(3,:)];
   T = [T(:,2),T(:,1),T(:,3)];
   Ti = inverse(T);
-  # Find the corners of the rectified image
+  % Find the corners of the rectified image
   a = T*[1,1,1]';
   a = a(1:2)./a(3);
   b = T*[1,w,1]';
@@ -21,7 +21,7 @@ function [y,result] = buildRectified(im, H, verbose)
   c = c(1:2)./c(3);
   d = T*[h,w,1]';
   d = d(1:2)./d(3);
-  # Find the bounding box for the outer rectangle
+  % Find the bounding box for the outer rectangle
   left = min([a(2),b(2),c(2),d(2)]);
   right = max([a(2),b(2),c(2),d(2)]);
   top = min([a(1),b(1),c(1),d(1)]);
@@ -31,7 +31,7 @@ function [y,result] = buildRectified(im, H, verbose)
   right = ceil(right*s);
   top = floor(top*s);
   bottom = ceil(bottom*s);
-  # Visual checking
+  % Visual checking
   if verbose
     figure
     hold('on')
@@ -45,8 +45,8 @@ function [y,result] = buildRectified(im, H, verbose)
     dd = [bottom,right]';
     plot([a*s,b*s,d*s,c*s,a*s](2,:),[a*s,b*s,d*s,c*s,a*s](1,:),[aa,bb,dd,cc,aa](2,:),[aa,bb,dd,cc,aa](1,:));
   end
-  # Populate the pixels in the rectangle. Color value is the weighted avg of
-  # the 4 nearest pixels, weighted by distance from the reprojected point
+  % Populate the pixels in the rectangle. Color value is the weighted avg of
+  % the 4 nearest pixels, weighted by distance from the reprojected point
   x = left;
   y = top;
   result = zeros(bottom-top,right-left,3);
@@ -68,7 +68,7 @@ function [y,result] = buildRectified(im, H, verbose)
       result(i,j,:) = patch;
     end
   end
-  # More visual checking
+  % More visual checking
   if verbose
     figure
     hold('on')
@@ -76,5 +76,5 @@ function [y,result] = buildRectified(im, H, verbose)
     axis square
     hold('off')
   end
-  disp("Finished rectifying!");
+  disp('Finished rectifying!');
 end
