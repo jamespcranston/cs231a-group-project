@@ -42,7 +42,7 @@ disp('Building rectified images');
 rectifiedImgs = vertcat(rectifiedImgs, {m1, m2});
 offsets = vertcat(offsets, {o1, o2});
 
-# Clear unnecessary variables
+% Clear unnecessary variables
 clear pairs
 clear o1
 clear o2

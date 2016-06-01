@@ -63,7 +63,7 @@ function [y,result] = buildRectified(im, H, verbose)
         patch .*= repmat(dists,1,1,3);
         patch = sum(sum(patch));
         patch ./= sum(sum(dists));
-        patch = round(min(patch.+1, 255));
+        patch = round(min(patch+1, 255));
       end
       result(i,j,:) = patch;
     end

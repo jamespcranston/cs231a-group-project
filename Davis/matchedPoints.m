@@ -1,23 +1,23 @@
-# Given two stereo pairs with a shared camera, returns two N*3 lists of 
-# Euclidean world points that must correspond between the two point clouds.
+% Given two stereo pairs with a shared camera, returns two N*3 lists of 
+% Euclidean world points that must correspond between the two point clouds.
 
-# Arguments: p11,p12,p21,p22 are n*2 lists of corresponding pixel coordinates 
-# discovered by the sliding window. p12 and p21 come from the rectified 
-# versions of the common camera, while p11 comes from the rectified camera
-# unique to stereo pair 1, and p22 comes from the rectified camera unique to
-# stereo pair 2. The first index refers to the stereo pair, the second index
-# refers to the camera within that pair. 
+% Arguments: p11,p12,p21,p22 are n*2 lists of corresponding pixel coordinates 
+% discovered by the sliding window. p12 and p21 come from the rectified 
+% versions of the common camera, while p11 comes from the rectified camera
+% unique to stereo pair 1, and p22 comes from the rectified camera unique to
+% stereo pair 2. The first index refers to the stereo pair, the second index
+% refers to the camera within that pair. 
 
-# h12 and h21 are the rectifying homographies for the common camera in each
-# stereo pair. Naming convention is consistent with above. 
+% h12 and h21 are the rectifying homographies for the common camera in each
+% stereo pair. Naming convention is consistent with above. 
 
-# m11,m12,m21,m22 are the camera matrices for the rectified cameras in the
-# stereo pairs. Naming convention is consistent with above. 
+% m11,m12,m21,m22 are the camera matrices for the rectified cameras in the
+% stereo pairs. Naming convention is consistent with above. 
 
-# im11,im12,im21,im22 are the rectified images from cameras p11,p12,p21,p22, 
-# respectively. 
+% im11,im12,im21,im22 are the rectified images from cameras p11,p12,p21,p22, 
+% respectively. 
 
-# im is the original, nonrectified image coming from the shared camera
+% im is the original, nonrectified image coming from the shared camera
 
 function [P1,P2] = matchedPoints(p11,p12,p21,p22,h12,h21,m11,m12,m21,m22,im11,im12,im21,im22,im)
   h = size(im,1);
