@@ -41,3 +41,23 @@ disp('Building rectified images');
 [o2,m2] = buildRectified(im2, T2, true);
 rectifiedImgs = vertcat(rectifiedImgs, {m1, m2});
 offsets = vertcat(offsets, {o1, o2});
+
+# Clear unnecessary variables
+clear pairs
+clear o1
+clear o2
+clear node_pairs
+clear m1
+clear m2
+clear ind1
+clear ind2
+clear im1
+clear im2
+clear i
+clear frames
+clear cam1
+clear cam2
+clear T1
+clear T2
+clear P1
+clear P2
