@@ -6,7 +6,6 @@
 # argument is true if you want to see graphical representations of the output,
 # false otherwise. 
 
-#close all; clc;
 function [y,result] = buildRectified(im, H, verbose)
   [h, w, ~] = size(im);
   # Change the coordinate system to match the vertical indexing of pixels
@@ -23,10 +22,15 @@ function [y,result] = buildRectified(im, H, verbose)
   d = T*[h,w,1]';
   d = d(1:2)./d(3);
   # Find the bounding box for the outer rectangle
-  left = floor(min(a(2),c(2)));
-  right = ceil(max(b(2),d(2)));
-  top = floor(min(a(1),b(1)));
-  bottom = ceil(max(c(1),d(1)));
+  left = floor(min([a(2),b(2),c(2),d(2)]));
+  right = ceil(max([a(2),b(2),c(2),d(2)]));
+  top = floor(min([a(1),b(1),c(1),d(1)]));
+  bottom = ceil(max([a(1),b(1),c(1),d(1)]));
+  s = 400/(bottom-top);
+  left *= s;
+  right *= s;
+  top *= s;
+  bottom *= s;
   # Visual checking
   if verbose
     figure
@@ -39,7 +43,7 @@ function [y,result] = buildRectified(im, H, verbose)
     bb = [top,right]';
     cc = [bottom,left]';
     dd = [bottom,right]';
-    plot([a,b,d,c,a](2,:),[a,b,d,c,a](1,:),[aa,bb,dd,cc,aa](2,:),[aa,bb,dd,cc,aa](1,:));
+    plot([a*s,b*s,d*s,c*s,a*s](2,:),[a*s,b*s,d*s,c*s,a*s](1,:),[aa,bb,dd,cc,aa](2,:),[aa,bb,dd,cc,aa](1,:));
   end
   # Populate the pixels in the rectangle. Color value is the weighted avg of
   # the 4 nearest pixels, weighted by distance from the reprojected point
@@ -48,7 +52,7 @@ function [y,result] = buildRectified(im, H, verbose)
   result = zeros(bottom-top,right-left,3);
   for i=1:bottom-top
     for j=1:right-left
-      p = Ti*[i+y;j+x;1];
+      p = Ti*[(i+y)/s;(j+x)/s;1];
       p = p(1:2)./p(3);
       patch = zeros(1,1,3);
       if p(1) > 1 && p(1) < h && p(2) > 1 && p(2) < w
@@ -72,4 +76,5 @@ function [y,result] = buildRectified(im, H, verbose)
     axis square
     hold('off')
   end
+  disp("Finished rectifying!");
 end
