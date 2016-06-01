@@ -6,7 +6,7 @@
 % argument is true if you want to see graphical representations of the output,
 % false otherwise. 
 
-function [y,result] = buildRectified(im, H, verbose)
+function [result, y, s] = buildRectified(im, H, verbose, s)
   [h, w, ~] = size(im);
   % Change the coordinate system to match the vertical indexing of pixels
   T = [H(2,:);H(1,:);H(3,:)];
@@ -26,7 +26,9 @@ function [y,result] = buildRectified(im, H, verbose)
   right = max([a(2),b(2),c(2),d(2)]);
   top = min([a(1),b(1),c(1),d(1)]);
   bottom = max([a(1),b(1),c(1),d(1)]);
-  s = 400.0/(bottom-top);
+  if s==0
+    s = 400.0/(bottom-top);
+  end
   left = floor(left*s);
   right = ceil(right*s);
   top = floor(top*s);

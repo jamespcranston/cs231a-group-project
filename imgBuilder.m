@@ -21,7 +21,7 @@ offsets = cell(0,2);
 Ps = cell(0,2);
 Ts = cell(0,2);
 
-i=3
+i=1
 
 
 ind1 = pairs(i,1);
@@ -36,9 +36,9 @@ im2 = frames(ind2).image;
 [T1, T2, P1, P2] = rectifyImages(cam1, cam2);
 Ps = vertcat(Ps, {P1, P2});
 Ts = vertcat(Ts, {T1, T2});
-disp('Building rectified images');
-[o1,m1] = buildRectified(im1, T1, true);
-[o2,m2] = buildRectified(im2, T2, true);
+disp("Building rectified images");
+[o1,m1,s] = buildRectified(im1, T1, true, 0);
+[o2,m2] = buildRectified(im2, T2, true, s);
 rectifiedImgs = vertcat(rectifiedImgs, {m1, m2});
 offsets = vertcat(offsets, {o1, o2});
 
