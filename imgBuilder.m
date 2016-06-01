@@ -13,7 +13,7 @@ addpath Davis;
 addpath james;
 addpath leahkim;
 
-load('construct-pairs/frames.mat');
+load('../frames.mat');
 pairs = node_pairs;
 
 rectifiedImgs = cell(0,2);
