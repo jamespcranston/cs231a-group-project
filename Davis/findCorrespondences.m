@@ -32,21 +32,18 @@ function [P1, P2] = findCorrespondences(IM1, IM2, offset1, offset2, diam, thresh
     im1 = im1(1:size(im2,1),:,:);
   end
   % Zero-pad the images
-  h = size(im1,1);
-  w1 = size(im1, 2);
-  w2 = size(im2, 2);
-  m1 = zeros(h+2*offset, w1+2*offset, 3);
-  m2 = zeros(h+2*offset, w2+2*offset, 3);
-  m1(1+offset:h+offset, 1+offset:w1+offset, :) = im1;
-  m2(1+offset:h+offset, 1+offset:w2+offset, :) = im2;
+  h = size(im1,1)-2*offset;
+  w1 = size(im1, 2)-2*offset;
+  w2 = size(im2, 2)-2*offset;
   % The helper function gives a non-injective mapping from the first
   % image to the second. To get an injective mapping, we run the helper
   % function again in the opposite order, and take the intersection of
   % the correspondence sets. 
   disp('Performing sliding window');
-  x1 = helper(m1, m2, diam, thresh, h, w1, w2);
+  x1 = helper(im1, im2, diam, thresh, h, w1, w2);
+  figure
   disp('Finished one direction, now doing the other');
-  x2 = helper(m2, m1, diam, thresh, h, w2, w1);
+  x2 = helper(im2, im1, diam, thresh, h, w2, w1);
   for i=1:size(x1, 1)
     nmatches = sum(ismember(x2,[x1(i,1),x1(i,3),x1(i,2)],'rows'));
     if nmatches>0
@@ -67,7 +64,7 @@ function P = helper(im1, im2, diam, thresh, h, width1, width2)
       % Create normalized window in image 1
       w1 = reshape(im1(i-offset:i+offset,j1-offset:j1+offset,:),1,diam^2,3);
       % Check that more than half of the pixels are non-trivial
-      if sum(sum(w1,3)==0) < floor(diam^2/2)
+      if sum(sum(w1,3)==0) < 1 && im1(i,j1,1)-im1(i,j1,3) > 10
         w1 = w1-mean(w1,2);
         w1 = w1./sqrt(sum(w1.^2,2));
         best = 0;
@@ -76,7 +73,7 @@ function P = helper(im1, im2, diam, thresh, h, width1, width2)
           % Create normalized window in image 2
           w2 = reshape(im2(i-offset:i+offset,j2-offset:j2+offset,:),1,diam^2,3);
           % Check that more than half of the pixels are non-trivial
-          if sum(sum(w2,3)==0) < floor(diam^2/2)
+          if sum(sum(w2,3)==0) < 1 && im2(i,j2,1)-im2(i,j2,3) > 10
             w2 = w2-mean(w2,2);
             w2 = w2./sqrt(sum(w2.^2,2));
             % Compute normalized cross-correlation and dual-aggregation h-mean
