@@ -12,7 +12,7 @@
 
 % The mapping is injective. 
 
-function [P1, P2] = findCorrespondences(IM1, IM2, offset1, offset2, diam, thresh)
+function [P1, P2] = findCorrespondences(IM1, IM2, P2P1, P2P2, diam, thresh)
   offset = floor(diam/2);
   [h1,w1,~] = size(IM1);
   [h2,w2,~] = size(IM2);
@@ -21,6 +21,8 @@ function [P1, P2] = findCorrespondences(IM1, IM2, offset1, offset2, diam, thresh
   % Vertically crop the images so that they align
   im1=IM1;
   im2=IM2;
+  offset1 = -P2P1(1,3);
+  offset2 = -P2P2(1,3);
   if offset1 > offset2
     im2 = IM2(offset1-offset2+1:h2,:,:);
   else
@@ -31,7 +33,6 @@ function [P1, P2] = findCorrespondences(IM1, IM2, offset1, offset2, diam, thresh
   else
     im1 = im1(1:size(im2,1),:,:);
   end
-  % Zero-pad the images
   h = size(im1,1)-2*offset;
   w1 = size(im1, 2)-2*offset;
   w2 = size(im2, 2)-2*offset;

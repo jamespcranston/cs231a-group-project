@@ -6,7 +6,8 @@
 % argument is true if you want to see graphical representations of the output,
 % false otherwise. 
 
-function [result, y, x, s] = buildRectified(im, H, verbose, s)
+function [result, point2pic] = buildRectified(im, H, sx, sy, verbose)
+  defaultimsize = 80;
   [h, w, ~] = size(im);
   % Change the coordinate system to match the vertical indexing of pixels
   T = [H(2,:);H(1,:);H(3,:)];
@@ -26,13 +27,16 @@ function [result, y, x, s] = buildRectified(im, H, verbose, s)
   right = max([a(2),b(2),c(2),d(2)]);
   top = min([a(1),b(1),c(1),d(1)]);
   bottom = max([a(1),b(1),c(1),d(1)]);
-  if s==0
-    s = 200.0/(bottom-top);
+  if sy==0
+    sy = defaultimsize/(bottom-top);
   end
-  left = floor(left*s);
-  right = ceil(right*s);
-  top = floor(top*s);
-  bottom = ceil(bottom*s);
+  if sx==0
+    sx = defaultimsize/(right-left);
+  end
+  left = floor(left*sx);
+  right = ceil(right*sx);
+  top = floor(top*sy);
+  bottom = ceil(bottom*sy);
   % Visual checking
   if verbose
     figure
@@ -45,7 +49,7 @@ function [result, y, x, s] = buildRectified(im, H, verbose, s)
     bb = [top,right]';
     cc = [bottom,left]';
     dd = [bottom,right]';
-    plot([a*s,b*s,d*s,c*s,a*s](2,:),[a*s,b*s,d*s,c*s,a*s](1,:),[aa,bb,dd,cc,aa](2,:),[aa,bb,dd,cc,aa](1,:));
+    plot([a*sx,b*sx,d*sx,c*sx,a*sx](2,:),[a*sy,b*sy,d*sy,c*sy,a*sy](1,:),[aa,bb,dd,cc,aa](2,:),[aa,bb,dd,cc,aa](1,:));
   end
   % Populate the pixels in the rectangle. Color value is the weighted avg of
   % the 4 nearest pixels, weighted by distance from the reprojected point
@@ -54,7 +58,7 @@ function [result, y, x, s] = buildRectified(im, H, verbose, s)
   result = zeros(bottom-top,right-left,3);
   for i=1:bottom-top
     for j=1:right-left
-      p = Ti*[(i+y)/s;(j+x)/s;1];
+      p = Ti*[(i+y)/sy;(j+x)/sx;1];
       p = p(1:2)./p(3);
       patch = zeros(1,1,3);
       if p(1) > 1 && p(1) < h && p(2) > 1 && p(2) < w
@@ -79,4 +83,5 @@ function [result, y, x, s] = buildRectified(im, H, verbose, s)
     hold('off')
   end
   disp('Finished rectifying!');
+  point2pic = [0, sy, -y; sx, 0, -x; 0, 0, 1];
 end

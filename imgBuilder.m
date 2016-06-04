@@ -17,13 +17,12 @@ load('../frames.mat');
 pairs = node_pairs;
 
 rectifiedImgs = cell(0,2);
-offsets = cell(0,2);
+Ss = cell(0,2);
 Ps = cell(0,2);
 Ts = cell(0,2);
-Ss = zeros(0,1);
 
 for i=1:5
-  i
+  figure
   ind1 = pairs(i,1);
   ind2 = pairs(i,2);
   % Load both cameras and their matrices
@@ -37,30 +36,21 @@ for i=1:5
   Ps = vertcat(Ps, {P1, P2});
   Ts = vertcat(Ts, {T1, T2});
   disp("Building rectified images");
-  [m1,o1,s] = buildRectified(im1, T1, true, 0);
-  [m2,o2,~] = buildRectified(im2, T2, true, s);
-  Ss = [Ss; s];
+  [m1,s1] = buildRectified(im1, T1, 0, 0, false);
+  [m2,s2] = buildRectified(im2, T2, s1(2,1), s1(1,2), false);
+  Ss = vertcat(Ss, {s1, s2});
   rectifiedImgs = vertcat(rectifiedImgs, {m1, m2});
-  offsets = vertcat(offsets, {o1, o2});
 end
 
 % Clear unnecessary variables
 clear pairs
-clear o1
-clear o2
 clear node_pairs
-clear m1
-clear m2
-clear ind1
-clear ind2
-clear im1
-clear im2
+clear m1 m2
+clear ind1 ind2
+clear im1 im2
 clear i
 clear frames
-clear cam1
-clear cam2
-clear T1
-clear T2
-clear P1
-clear P2
-clear s
+clear cam1 cam2
+clear T1 T2
+clear P1 P2
+clear s1 s2
