@@ -6,3 +6,20 @@ Using saved MST and pixel correspondences, generate point correspondences betwee
 For every point correspondence set, find the best-fit similarity transformation (DONE)
 Apply the similarities in sequence to get a single dense point cloud (UNDONE)
 	(This could also be done manually rather than recursively)
+
+
+
+ToDo list, post-presentation:
+
+I think foreground/background filtering is something a lot of groups did which would help us a lot. 
+An idea: before putting an image into our algorithm, implement k-means clustering on the color values of each pixel, then look at the pixels on the perimeter of the image, and mask off any pixels whose centroid is represented on more than 25% of the perimeter. 
+With k=3 or 4, this should mask off most of the background.
+
+Scale the rectified images so that both height and width are constant. 
+Davis will take care of this one since it changes a bunch of stuff in other code he wrote. 
+
+Find the bug in matchedPoints
+
+Find a way to quantify the accuracy of our results using the ground truth provided in the data set
+
+

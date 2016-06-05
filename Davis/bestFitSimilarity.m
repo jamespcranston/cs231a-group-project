@@ -12,8 +12,8 @@ function H = bestFitSimilarity(A, B)
   newA = A-repmat([centroidA(1:3);1],1,n);
   newB = B-repmat([centroidB(1:3);1],1,n);
   % Rescale the points so that the mean distance from the centroid is 1
-  distA = sum(sqrt(sum(newA.^2)));
-  distB = sum(sqrt(sum(newB.^2)));
+  distA = mean(sqrt(sum(newA.^2)));
+  distB = mean(sqrt(sum(newB.^2)));
   newA = [newA(1:3,:)./distA;newA(4,:)];
   newB = [newB(1:3,:)./distB;newB(4,:)];
   % Find optimal rotation, scale it
