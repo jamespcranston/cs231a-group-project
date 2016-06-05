@@ -6,7 +6,7 @@ A = double(imread(img));
 imshow(uint8(round(A)));
 
 % Run Kmeans. Tweak the "num_clusters" parameter
-img = double(imread('mandrill-small.tiff'));
+img = double(imread(img));
 min_iters = 50; % define distortion fn for convergence later
 num_clusters = 16;
 depth = size(img,3); % should be three-dimensional for the (R,G,B) vector
