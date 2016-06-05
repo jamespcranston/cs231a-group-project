@@ -1,0 +1,5 @@
+- voxel carving/voxel shading are bad at handling concavity, whereas ours handles it OK (for presentation)
+- visualize what is happening (lines between point clouds and correspondences in the o
+- go bug hunting in matchedPoints.m - this might have a visualization of the poitns it is finding and the lines
+- see if you can come up with a better version of matched points
+- adjust width in order to make the rectified images have the same width and height
