@@ -1,66 +1,65 @@
 % Takes pairs from the MST and returns rectified images, and associated info.
 
-% TO USE THIS CODE:
-% load the 'node_pairs' file from James' folder
-% set i to the index of the desired camera pairs
-% run the code
-% clear all variables except Ps, Ts, offsets, and rectifiedImgs
-% type "save('filename')" to save the above values, or concatenate them with
-% existing values saved to disk. 
-
 clc; close all;
+
+load('../frames.mat');
 addpath Davis;
 addpath james;
 addpath leahkim;
 
+% Screen off the backgrounds
+numC = 5;
+imgs = {20,1};
+for i=[1:20]
+  img = frames(i).image;
+  imgs{i} = screen(img,numC);
+end
+clear img numC frames i
+save -mat 'screenedimgs.mat';
+
 load('../frames.mat');
+load('construct-pairs/node-pairs.txt');
 pairs = node_pairs;
 
+% Generate rectified images
 rectifiedImgs = cell(0,2);
-offsets = cell(0,2);
+Ss = cell(0,2);
 Ps = cell(0,2);
 Ts = cell(0,2);
-Ss = zeros(0,1);
 
-for i=1:5
-  i
+for i=1:19
+  figure
   ind1 = pairs(i,1);
   ind2 = pairs(i,2);
   % Load both cameras and their matrices
   cam1 = frames(ind1).P;
   cam2 = frames(ind2).P;
-  im1 = frames(ind1).image;
-  im2 = frames(ind2).image;
+  im1 = imgs{ind1};
+  im2 = imgs{ind2};
     
   % Rectify cameras
   [T1, T2, P1, P2] = rectifyImages(cam1, cam2);
   Ps = vertcat(Ps, {P1, P2});
   Ts = vertcat(Ts, {T1, T2});
   disp("Building rectified images");
-  [m1,o1,s] = buildRectified(im1, T1, true, 0);
-  [m2,o2,~] = buildRectified(im2, T2, true, s);
-  Ss = [Ss; s];
+  [m1,s1] = buildRectified(im1, T1, 0, 0, false);
+  [m2,s2] = buildRectified(im2, T2, s1(2,1), s1(1,2), false);
+  Ss = vertcat(Ss, {s1, s2});
   rectifiedImgs = vertcat(rectifiedImgs, {m1, m2});
-  offsets = vertcat(offsets, {o1, o2});
 end
 
 % Clear unnecessary variables
 clear pairs
-clear o1
-clear o2
 clear node_pairs
-clear m1
-clear m2
-clear ind1
-clear ind2
-clear im1
-clear im2
+clear m1 m2
+clear ind1 ind2
+clear im1 im2
 clear i
 clear frames
-clear cam1
-clear cam2
-clear T1
-clear T2
-clear P1
-clear P2
-clear s
+clear cam1 cam2
+clear T1 T2
+clear P1 P2
+clear s1 s2
+clear imgs
+
+save -mat 'finalinput.mat';
