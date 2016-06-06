@@ -10,4 +10,5 @@ function plot_pt_cloud(P)
         C = [R G B]./255;
         scatter3(X,Y,Z, 25, C, 'filled');
         view(-170, 4);
+        axis([-4 10 -5 5 -10 6]);
 end
