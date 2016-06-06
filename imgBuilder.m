@@ -1,35 +1,41 @@
 % Takes pairs from the MST and returns rectified images, and associated info.
 
-% TO USE THIS CODE:
-% load the 'node_pairs' file from James' folder
-% set i to the index of the desired camera pairs
-% run the code
-% clear all variables except Ps, Ts, offsets, and rectifiedImgs
-% type "save('filename')" to save the above values, or concatenate them with
-% existing values saved to disk. 
-
 clc; close all;
+
+load('../frames.mat');
 addpath Davis;
 addpath james;
 addpath leahkim;
 
+% Screen off the backgrounds
+numC = 5;
+imgs = {20,1};
+for i=[1:20]
+  img = frames(i).image;
+  imgs{i} = screen(img,numC);
+end
+clear img numC frames i
+save -mat 'screenedimgs.mat';
+
 load('../frames.mat');
+load('construct-pairs/node-pairs.txt');
 pairs = node_pairs;
 
+% Generate rectified images
 rectifiedImgs = cell(0,2);
 Ss = cell(0,2);
 Ps = cell(0,2);
 Ts = cell(0,2);
 
-for i=1:5
+for i=1:19
   figure
   ind1 = pairs(i,1);
   ind2 = pairs(i,2);
   % Load both cameras and their matrices
   cam1 = frames(ind1).P;
   cam2 = frames(ind2).P;
-  im1 = frames(ind1).image;
-  im2 = frames(ind2).image;
+  im1 = imgs{ind1};
+  im2 = imgs{ind2};
     
   % Rectify cameras
   [T1, T2, P1, P2] = rectifyImages(cam1, cam2);
@@ -54,3 +60,6 @@ clear cam1 cam2
 clear T1 T2
 clear P1 P2
 clear s1 s2
+clear imgs
+
+save -mat 'finalinput.mat';

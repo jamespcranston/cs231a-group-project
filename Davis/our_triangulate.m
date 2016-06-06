@@ -9,8 +9,8 @@
 function P = our_triangulate(M1, M2, p1, p2, im1, im2, p2p1, p2p2)
   n = size(p1, 1);
   P = zeros(n,7);
-  pic2point1 = inverse(p2p1);
-  pic2point2 = inverse(p2p2);
+  pic2point1 = inv(p2p1);
+  pic2point2 = inv(p2p2);
   for i=1:n
     point1 = pic2point1*[p1(i,:)';1];
     point2 = pic2point2*[p2(i,:)';1];

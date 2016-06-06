@@ -7,7 +7,7 @@
 % false otherwise. 
 
 function [result, point2pic] = buildRectified(im, H, sx, sy, verbose)
-  defaultimsize = 80;
+  defaultimsize = 200;
   [h, w, ~] = size(im);
   % Change the coordinate system to match the vertical indexing of pixels
   T = [H(2,:);H(1,:);H(3,:)];
@@ -69,7 +69,7 @@ function [result, point2pic] = buildRectified(im, H, sx, sy, verbose)
         patch .*= repmat(dists,1,1,3);
         patch = sum(sum(patch));
         patch ./= sum(sum(dists));
-        patch = round(min(patch+1, 255));
+        patch = round(patch);
       end
       result(i,j,:) = patch;
     end

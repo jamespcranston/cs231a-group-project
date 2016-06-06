@@ -87,8 +87,8 @@ function [ind1,ind2] = matchedPoints(p11,p12,p21,p22,h12,h21,s12,s21,im,verbose)
     figure
     hold on
     image(im);
-    scatter(p1(1,:),p1(2,:),2,'g',"filled");
-    scatter(p2(1,:),p2(2,:),2,'b',"filled");
+    scatter(p1(1,:),p1(2,:),1,'g',"filled");
+    scatter(p2(1,:),p2(2,:),1,'b',"filled");
     hold off
   end
   distsx = bsxfun(@minus, p1(1,:)',p2(1,:));
@@ -96,7 +96,7 @@ function [ind1,ind2] = matchedPoints(p11,p12,p21,p22,h12,h21,s12,s21,im,verbose)
   dists = distsx.^2+distsy.^2;
   matsize = size(dists);
   dists = reshape(dists,1,matsize(1)*matsize(2));
-  [~,i] = sort(dists);
+  [d,i] = sort(dists);
   ind1 = zeros(20,1);
   ind2 = zeros(20,1);
   for j=1:20
@@ -104,14 +104,15 @@ function [ind1,ind2] = matchedPoints(p11,p12,p21,p22,h12,h21,s12,s21,im,verbose)
     ind1(j) = a;
     ind2(j) = b;
   end
-  ind1;
-  ind2;
   if verbose
+    mean(d(1:20))
+    %{
     figure
     hold on
     image(im);
     for j=1:20
       plot([p1(1,ind1(j)),p2(1,ind2(j))],[p1(2,ind1(j)),p2(2,ind2(j))],'linewidth',10);
     end
+    %}
   end
 end
